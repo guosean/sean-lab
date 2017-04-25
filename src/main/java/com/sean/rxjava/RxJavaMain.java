@@ -74,4 +74,9 @@ public class RxJavaMain {
         System.out.println(o1.contains("2").blockingGet());
     }
 
+    public static void asyncCase(){
+        List<String> list = Lists.newArrayList("a","b","c");
+        Observable.fromIterable(list).subscribe(s -> System.out.println(s));
+    }
+
 }
