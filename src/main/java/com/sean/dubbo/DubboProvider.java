@@ -33,7 +33,7 @@ public class DubboProvider {
         });
         serviceConfig.export();
 
-        Thread.sleep(10000);
+        Thread.sleep(100000);
     }
 
 }

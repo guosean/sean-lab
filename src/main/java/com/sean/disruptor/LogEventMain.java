@@ -34,13 +34,18 @@ public class LogEventMain {
         // Get the ring buffer from the Disruptor to be used for publishing.
         RingBuffer<LongEvent> ringBuffer = disruptor.getRingBuffer();
 
-        ByteBuffer bb = ByteBuffer.allocate(8);
+        ByteBuffer bb = ByteBuffer.allocate(16);
         for (long l = 0; true; l++)
         {
             bb.putLong(0, l);
-            ringBuffer.publishEvent((event, sequence, buffer) -> event.set(buffer.getLong(0)), bb);
-            Thread.sleep(1000);
+            long id = ringBuffer.next();
+            LongEvent longEvent = ringBuffer.get(id);
+            longEvent.set(l+3);
+            ringBuffer.publish(id);
+            System.out.println(String.format("remain:%d,id:%d,time:%d",ringBuffer.remainingCapacity(),id,System.currentTimeMillis()));
+            /*ringBuffer.publishEvent((event, sequence, buffer) -> event.set(buffer.getLong(0)), bb);*/
         }
+
     }
 
 }

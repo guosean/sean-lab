@@ -67,11 +67,21 @@ public class RxJavaMain {
             System.exit(0x0);
         }
 
+
     }
 
     public static void operatorCase() {
         Observable o1 = Observable.just("1", "2");
+
         System.out.println(o1.contains("2").blockingGet());
+    }
+
+    public int getResult(){
+        return 1;
+    }
+
+    public Observable getObservable(){
+        return Observable.just(getResult());
     }
 
     public static void asyncCase(){

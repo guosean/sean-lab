@@ -1,11 +1,16 @@
 package com.sean.rxjava;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by guozhenbin on 2017/4/20.
@@ -70,4 +75,61 @@ public class TestJdk8 {
         System.out.println(list.parallelStream().map(t -> t*2).reduce((a,b) -> a+b).get().intValue());
     }
 
+    @Test
+    public void testReference(){
+        AtomicInteger wr = new AtomicInteger(10);
+        AtomicInteger sr = new AtomicInteger(12);
+        WeakReference<AtomicInteger> weakReference = new WeakReference<>(wr);
+        SoftReference<AtomicInteger> softReference = new SoftReference<>(sr);
+        wr = null;
+        sr = null;
+
+        System.gc();
+        System.out.println(null != weakReference.get() ? weakReference.get():"wf");
+        System.out.println(null != softReference.get() ? softReference.get():"sf");
+    }
+
+    @Test
+    public void testNumToVoice(){
+        int num = 1001206780;
+        char[] chars = Integer.toString(num).toCharArray();
+        System.out.println(chars);
+        Stack<String> calls = new Stack();
+
+        int jz = 1;
+        for(int i=chars.length-1,j=1; i>-1;){
+            StringBuilder sb = new StringBuilder();
+
+            while(j%5!=0 && i>-1){
+                int idx = chars[i]-48-1;
+                System.out.println(String.format("i:%d,j:%d,idx:%d",i,j,idx));
+                if(idx>-1){
+                    String ns = numn[idx]+voice[j-1];
+                    sb.insert(0, StringUtils.isEquals(ns,"一"));
+                }
+
+                i--;
+                j++;
+            }
+
+            calls.push(sb.toString()+jinz[jz-1]);
+            j = 1;
+            jz++;
+        }
+        int count = calls.size();
+        for(int i=0;i<count;i++){
+            System.out.print(calls.pop());
+        }
+
+    }
+
+    private String numToVoice(int num){
+        String voice = "";
+
+        return voice;
+    }
+
+    String[] voice = {"","十","百","千","万","亿"};
+    String[] jinz = {"元","万","亿"};
+    String[] numn = {"一","二","三","四","五","六","七","八","九"};
 }

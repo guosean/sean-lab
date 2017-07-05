@@ -7,6 +7,7 @@ import com.alibaba.dubbo.config.RegistryConfig;
 public class DubboConsumer {
 
     public static void main(String[] args) {
+
         ApplicationConfig config = new ApplicationConfig();
         config.setOwner("sean");
         config.setName("sean");
